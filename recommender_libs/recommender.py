@@ -13,8 +13,8 @@ recommenderdb = RecommenderDB()
 
 def filter_by_rating_and_releaseyear(combined_movieid_sim_counter):
 
-    movieid_imdbrating_dict = recommenderdb.get_imdbid_feature_dict("imdbrating")
-    movieid_releaseyear_dict = recommenderdb.get_imdbid_feature_dict("releaseyear")
+    movieid_imdbrating_dict = recommenderdb.get_imdbid_feature_dict("imdbRating")
+    movieid_releaseyear_dict = recommenderdb.get_imdbid_feature_dict("releaseYear")
 
     for item in combined_movieid_sim_counter:
         try:
@@ -95,16 +95,16 @@ def recommend(input_movieid_list, num_of_recommended_movies):
 
     # 以下可分别得到根据genre和mawid推荐出的结果，均为（movied_id: cos_sim_value）这种的字典
     recommender_helper = RecommenderHelper()
-    imdbactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "actor")
+    imdbactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbActors")
     # imdbmainactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "mainactor")
-    imdbdirector_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "director")
-    imdbgenre_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "genre")
-    imdbkeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbkeyword")
-    wikikeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "wikikeyword")
-    vioneltheme_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "vioneltheme")
-    vionelscene_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "vionelscene")
-    locationcountry_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "locationcountry")
-    locationcity_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "locationcity")
+    imdbdirector_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbDirectors")
+    imdbgenre_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbGenres")
+    imdbkeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbKeywords")
+    wikikeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "wikiKeywords")
+    vioneltheme_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "vionelThemes")
+    vionelscene_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "vionelScene")
+    locationcountry_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "locationCountry")
+    locationcity_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "locationCity")
 
     imdbgenre_movieid_sim_counter = Counter(imdbgenre_movieid_sim_dict)
     imdbactor_movieid_sim_counter = Counter(imdbactor_movieid_sim_dict)
