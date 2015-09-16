@@ -16,12 +16,14 @@ body {
 
 .feature-block {
     overflow: hidden;
-    padding: 40px;
+    padding: 40px 10%;
 /*    border-bottom-style: solid;
     border-bottom-color: rgba(255,255,255,0.2);
     border-bottom-width: 1px;*/
     background-color: rgba(3,23,35,0.95);
 }
+
+
 
 .feature-block.top{
     position: relative;
@@ -52,11 +54,23 @@ body {
 .info-detail {
     color: white;
     float: left;
-    padding: 170px 30px 0;
+    padding: 170px 0 0 30px;
     bottom: 0;
     position: relative;
 }
-
+.info-detail h1{
+    font-size: 40px;
+    text-shadow: 1px 1px 2px #011019;
+        font-weight: 400;
+        display: table;
+}
+.info-detail h1 span{
+    font-size: 25px;
+    opacity: .5;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 10px;
+}
 .info-detail div {
     overflow: hidden;
     padding-left: 0;
@@ -192,4 +206,22 @@ body {
 .section-title{
     color: #eee;
     font-size: 25px;
+    margin-bottom: 25px;
+    margin-top: 0;
+}
+
+
+
+@media(max-width: 767px){
+    .feature-block {
+        padding: 40px 5px;
+    }
+}
+@media(max-width: 991px){
+    .feature-block {
+        padding: 40px 5%;
+    }
+    .info-detail {
+        padding: 0;
+    }
 }
