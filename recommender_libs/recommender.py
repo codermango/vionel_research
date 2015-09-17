@@ -96,7 +96,6 @@ def recommend(input_movieid_list, num_of_recommended_movies):
     # 以下可分别得到根据genre和mawid推荐出的结果，均为（movied_id: cos_sim_value）这种的字典
     recommender_helper = RecommenderHelper()
     imdbactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbActors")
-    # imdbmainactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "mainactor")
     imdbdirector_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbDirectors")
     imdbgenre_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbGenres")
     imdbkeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbKeywords")
@@ -108,7 +107,6 @@ def recommend(input_movieid_list, num_of_recommended_movies):
 
     imdbgenre_movieid_sim_counter = Counter(imdbgenre_movieid_sim_dict)
     imdbactor_movieid_sim_counter = Counter(imdbactor_movieid_sim_dict)
-    # imdbmainactor_movieid_sim_counter = Counter(imdbmainactor_movieid_sim_dict)
     imdbdirector_movieid_sim_counter = Counter(imdbdirector_movieid_sim_dict)
     imdbkeyword_movieid_sim_counter = Counter(imdbkeyword_movieid_sim_dict)
     wikikeyword_movieid_sim_counter = Counter(wikikeyword_movieid_sim_dict)
@@ -134,7 +132,7 @@ def recommend(input_movieid_list, num_of_recommended_movies):
         del vionelscene_movieid_sim_counter[key]
         del locationcity_movieid_sim_counter[key]
         del locationcountry_movieid_sim_counter[key]
-        # del imdbmainactor_movieid_sim_counter[key]
+
 
     
 
