@@ -67,7 +67,7 @@ def reason_of_recommendation(all_feature_counter_list):
     for key in all_feature_counter_list[0]:
         imdbid = key[0]
         score_dict["imdb_genre"] = all_feature_counter_list[1][imdbid]
-        score_dict["imdb_actor"] = all_feature_counter_list[2][imdbid]
+        score_dict["imdb_mainactor"] = all_feature_counter_list[2][imdbid]
         score_dict["imdb_director"] = all_feature_counter_list[3][imdbid]
         score_dict["imdb_keyword"] = all_feature_counter_list[4][imdbid]
         score_dict["wiki_keyword"] = all_feature_counter_list[5][imdbid]
@@ -95,7 +95,7 @@ def recommend(input_movieid_list, num_of_recommended_movies):
 
     # 以下可分别得到根据genre和mawid推荐出的结果，均为（movied_id: cos_sim_value）这种的字典
     recommender_helper = RecommenderHelper()
-    imdbactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbActors")
+    # imdbactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbActors")
     imdbdirector_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbDirectors")
     imdbgenre_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbGenres")
     imdbkeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbKeywords")
@@ -104,9 +104,10 @@ def recommend(input_movieid_list, num_of_recommended_movies):
     vionelscene_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "vionelScene")
     locationcountry_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "locationCountry")
     locationcity_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "locationCity")
+    imdbmainactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbMainactors")
 
     imdbgenre_movieid_sim_counter = Counter(imdbgenre_movieid_sim_dict)
-    imdbactor_movieid_sim_counter = Counter(imdbactor_movieid_sim_dict)
+    # imdbactor_movieid_sim_counter = Counter(imdbactor_movieid_sim_dict)
     imdbdirector_movieid_sim_counter = Counter(imdbdirector_movieid_sim_dict)
     imdbkeyword_movieid_sim_counter = Counter(imdbkeyword_movieid_sim_dict)
     wikikeyword_movieid_sim_counter = Counter(wikikeyword_movieid_sim_dict)
@@ -114,17 +115,18 @@ def recommend(input_movieid_list, num_of_recommended_movies):
     vionelscene_movieid_sim_counter = Counter(vionelscene_movieid_sim_dict)
     locationcountry_movieid_sim_counter = Counter(locationcountry_movieid_sim_dict)
     locationcity_movieid_sim_counter = Counter(locationcity_movieid_sim_dict)
+    imdbmainactor_movieid_sim_counter = Counter(imdbmainactor_movieid_sim_dict)
 
     locationcountry_movieid_sim_counter = multiply_coefficient(locationcountry_movieid_sim_counter, 0.2)
     vionelscene_movieid_sim_counter = multiply_coefficient(vionelscene_movieid_sim_counter, 0.5)
     locationcity_movieid_sim_counter = multiply_coefficient(locationcity_movieid_sim_counter, 0.4)
 
-    combined_movieid_sim_counter = imdbgenre_movieid_sim_counter + imdbactor_movieid_sim_counter + imdbdirector_movieid_sim_counter + imdbkeyword_movieid_sim_counter + wikikeyword_movieid_sim_counter + vioneltheme_movieid_sim_counter + vionelscene_movieid_sim_counter + locationcountry_movieid_sim_counter + locationcity_movieid_sim_counter 
+    combined_movieid_sim_counter = imdbgenre_movieid_sim_counter + imdbmainactor_movieid_sim_counter + imdbdirector_movieid_sim_counter + imdbkeyword_movieid_sim_counter + wikikeyword_movieid_sim_counter + vioneltheme_movieid_sim_counter + vionelscene_movieid_sim_counter + locationcountry_movieid_sim_counter + locationcity_movieid_sim_counter 
 
     for key in input_movieid_list:
         del combined_movieid_sim_counter[key]
         del imdbgenre_movieid_sim_counter[key]
-        del imdbactor_movieid_sim_counter[key]
+        # del imdbactor_movieid_sim_counter[key]
         del imdbdirector_movieid_sim_counter[key]
         del imdbkeyword_movieid_sim_counter[key]
         del wikikeyword_movieid_sim_counter[key]
@@ -132,6 +134,7 @@ def recommend(input_movieid_list, num_of_recommended_movies):
         del vionelscene_movieid_sim_counter[key]
         del locationcity_movieid_sim_counter[key]
         del locationcountry_movieid_sim_counter[key]
+        del imdbmainactor_movieid_sim_counter[key]
 
 
     
@@ -144,7 +147,7 @@ def recommend(input_movieid_list, num_of_recommended_movies):
     final_co_recommended_movies = combined_movieid_sim_counter.most_common(num_of_recommended_movies)
 
     # get the features that have the top two scores.
-    all_feature_counter_list = [final_co_recommended_movies, imdbgenre_movieid_sim_counter, imdbactor_movieid_sim_counter, imdbdirector_movieid_sim_counter, imdbkeyword_movieid_sim_counter, wikikeyword_movieid_sim_counter, vioneltheme_movieid_sim_counter, vionelscene_movieid_sim_counter, locationcity_movieid_sim_counter, locationcountry_movieid_sim_counter]
+    all_feature_counter_list = [final_co_recommended_movies, imdbgenre_movieid_sim_counter, imdbmainactor_movieid_sim_counter, imdbdirector_movieid_sim_counter, imdbkeyword_movieid_sim_counter, wikikeyword_movieid_sim_counter, vioneltheme_movieid_sim_counter, vionelscene_movieid_sim_counter, locationcity_movieid_sim_counter, locationcountry_movieid_sim_counter]
 
     reason_tuple_list = reason_of_recommendation(all_feature_counter_list)
 

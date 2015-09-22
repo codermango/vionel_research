@@ -144,6 +144,26 @@ class RecommenderHelper:
 
         return result_dict
 
+    def __comparison_score_keyword(self, movieid_list, movieid_with_featureid_dict, coefficient):
+        input_movie_features = []
+        for item in movieid_list:
+            try:
+                feature_list = movieid_with_featureid_dict[item]
+                input_movie_features += feature_list
+            except KeyError:
+                continue
+        input_movie_features = list(set(input_movie_features))
+
+        result_dict = {}
+        for k, v in movieid_with_featureid_dict.items():
+            intersection_num = len(list(set(v).intersection(set(input_movie_features))))
+            score = intersection_num * coefficient
+            if score > 1:
+                score = 1
+            result_dict[k] = score
+
+        return result_dict
+
 
 
     def recommend(self, movieid_list, recommended_by):
@@ -157,9 +177,9 @@ class RecommenderHelper:
 
         movieid_with_featureid_dict = recommenderdb.get_imdbid_feature_dict(recommended_by)
 
-        print recommended_by
+        # print recommended_by
         result_dict = {}
-        if recommended_by == "imdbDirectors" or recommended_by == "imdbGenres" or recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene":
+        if recommended_by == "imdbDirectors" or recommended_by == "imdbGenres" or recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "imdbMainactors":
             
             featureid_with_number_dict = self.feature_num_dict[recommended_by]
             # print featureid_with_number_dict
@@ -192,7 +212,8 @@ class RecommenderHelper:
                 result_dict[k] = cosine_score
 
             return result_dict
-
+        elif recommended_by == "imdbKeywords":
+            result_dict = self.__comparison_score_keyword(movieid_list, movieid_with_featureid_dict, 0.1)
         else:
             result_dict = self.__comparison_score(movieid_list, movieid_with_featureid_dict, 0.1)
             return result_dict
