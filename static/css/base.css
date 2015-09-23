@@ -13,14 +13,24 @@ body {
     height: 80px;
 }
 
-.main-menu .nav-backhome a {
+.main-menu .nav-custom a {
     font-size: 1.2em;
     color: white !important;
-    line-height: 3px !important;
+    line-height: 60px !important;
     height: 60px;
     display: table;
-    padding: 0;
+    padding: 0 20px 0 0;
 }
+
+.open a{
+    background-color: #021420 !important;
+}
+
+.dropdown-menu {
+    background-color: #021420;
+}
+
+
 .main-menu .nav-backhome a span{
 display: table-cell;
 vertical-align: middle;

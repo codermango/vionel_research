@@ -14,7 +14,7 @@ $(document).ready(function() {
         .attr("width", width)
         .attr("height", height);
 
-    d3.json("/static/moviedetail/data/new_keyword.json", function(error, graph) {
+    d3.json("/static/moviedetail/data/bubble.json", function(error, graph) {
         if (error) throw error;
 
         force
