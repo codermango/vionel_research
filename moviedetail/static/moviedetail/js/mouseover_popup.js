@@ -89,7 +89,7 @@ function followmouse(e) {
 
 	gettrailobj().left = xcoord + "px"
 	gettrailobj().top = ycoord + "px"
-	var fnum = (xxcoord - 54) * rratio
+	var fnum = (xxcoord - 200) * rratio
 	fnum = Math.floor(fnum / 100) * 100
 	document.getElementById("small").src = dir + "t/" + fnum + ".jpg"
 	document.getElementById("small").width = "310"

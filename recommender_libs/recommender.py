@@ -77,7 +77,7 @@ def reason_of_recommendation(all_feature_counter_list):
         score_dict["locationcountry"] = all_feature_counter_list[9][imdbid]
         sorted_score_dict = sorted(score_dict.iteritems(), key=lambda d:d[1], reverse=True)
         reason_list = []
-        print sorted_score_dict
+        # print sorted_score_dict
         for item in sorted_score_dict[:4]:
             if item[1] != 0:
                 reason_list.append(item[0])
