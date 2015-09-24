@@ -241,6 +241,31 @@ def createweight():
 
 
 
+def add_new_features():
+    boxer_movies_path = "boxer_movies.json"
+    boxer_movies_with_scene_path = "boxer_movies_with_scene.json"
+    result_path = "result.json"
+
+    imdbid_city_dict = {}
+    with open(boxer_movies_with_scene_path) as boxer_movies_with_scene_file:
+        for line1 in boxer_movies_with_scene_file:
+            movie1 = json.loads(line1)
+            imdbid1 = movie1["imdbId"]
+            locationcity = movie1["locationCity"]
+            imdbid_city_dict[imdbid1] = locationcity
+            # print imdbid_city_dict
+
+
+    with open(boxer_movies_path) as boxer_movies_file, open(result_path, "w") as result_file:
+        for line2 in boxer_movies_file:
+            movie2 = json.loads(line2)
+            imdbid2 = movie2["imdbId"]
+            movie2["locationCity"] = imdbid_city_dict[imdbid2]
+            
+            result_json = json.dumps(movie2)
+            result_file.write(result_json + "\n")
+
+
 
 
 
@@ -249,5 +274,5 @@ def createweight():
 generate_movie_information("boxer_movies.json")
 # transform("boxer_movies_information.dat")
 
-# createweight()
+# add_new_features()
 

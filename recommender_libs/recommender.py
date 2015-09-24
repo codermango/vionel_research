@@ -66,15 +66,15 @@ def reason_of_recommendation(all_feature_counter_list):
     score_dict = {}
     for key in all_feature_counter_list[0]:
         imdbid = key[0]
-        score_dict["imdb_genre"] = all_feature_counter_list[1][imdbid]
-        score_dict["imdb_mainactor"] = all_feature_counter_list[2][imdbid]
-        score_dict["imdb_director"] = all_feature_counter_list[3][imdbid]
-        score_dict["imdb_keyword"] = all_feature_counter_list[4][imdbid]
-        score_dict["wiki_keyword"] = all_feature_counter_list[5][imdbid]
-        score_dict["vionel_theme"] = all_feature_counter_list[6][imdbid]
-        score_dict["vionel_scene"] = all_feature_counter_list[7][imdbid]
-        score_dict["locationcity"] = all_feature_counter_list[8][imdbid]
-        score_dict["locationcountry"] = all_feature_counter_list[9][imdbid]
+        score_dict["imdbGenres"] = all_feature_counter_list[1][imdbid]
+        score_dict["imdbMainactors"] = all_feature_counter_list[2][imdbid]
+        score_dict["imdbDirectors"] = all_feature_counter_list[3][imdbid]
+        score_dict["imdbKeywords"] = all_feature_counter_list[4][imdbid]
+        score_dict["wikiKeywords"] = all_feature_counter_list[5][imdbid]
+        score_dict["vionelThemes"] = all_feature_counter_list[6][imdbid]
+        score_dict["vionelScene"] = all_feature_counter_list[7][imdbid]
+        score_dict["locationCity"] = all_feature_counter_list[8][imdbid]
+        score_dict["locationCountry"] = all_feature_counter_list[9][imdbid]
         sorted_score_dict = sorted(score_dict.iteritems(), key=lambda d:d[1], reverse=True)
         reason_list = []
         # print sorted_score_dict

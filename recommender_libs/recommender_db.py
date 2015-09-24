@@ -61,7 +61,7 @@ class RecommenderDB:
 
     def create_feature_num_collection(self):
         genre_dict = self.get_feature_featurenum_dict("imdbGenres")
-        actor_dict = self.get_feature_featurenum_dict("imdbActors")
+        # actor_dict = self.get_feature_featurenum_dict("imdbActors")
         director_dict = self.get_feature_featurenum_dict("imdbDirectors")
         imdbkeyword_dict = self.get_feature_featurenum_dict("imdbKeywords")
         wikikeyword_dict = self.get_feature_featurenum_dict("wikiKeywords")
@@ -74,7 +74,7 @@ class RecommenderDB:
 
         result_dict = {}
         result_dict["imdbGenres"] = genre_dict
-        result_dict["imdbActors"] = actor_dict
+        # result_dict["imdbActors"] = actor_dict
         result_dict["imdbDirectors"] = director_dict
         result_dict["imdbKeywords"] = imdbkeyword_dict
         result_dict["wikiKeywords"] = wikikeyword_dict
@@ -90,7 +90,16 @@ class RecommenderDB:
             result_dict_json = json.dumps(result_dict)
             feature_num_file.write(result_dict_json)
 
+    # def change_feature_num(self):
+    #     locationcountry_num_dict = self.get_feature_featurenum_dict("locationCountry")
+    #     print locationcountry_num_dict
 
+    #     with open("feature_num.json", "w+") as feature_num_file:
+    #         feature_num_dict = json.loads(feature_num_file.readline())
+    #         feature_num_dict["locationCountry"] = locationcountry_num_dict
+    #         feature_num_json = json.dumps(feature_num_dict)
+    #         feature_num_file.write(feature_num_json)
 
 # recommenderdb = RecommenderDB()
+# # recommenderdb.change_feature_num()
 # recommenderdb.create_feature_num_collection()
