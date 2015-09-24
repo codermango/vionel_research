@@ -19,9 +19,10 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^recommender/$', 'recommender.views.index', name='recommender_index'),
-    url(r'^recommender/recommend/$', 'recommender.views.recommend'),
-    url(r'^$', 'views.home', name='home'),
+    # url(r'^recommender/$', 'recommender.views.index', name='recommender_index'),
+    url(r'^recommender/recommend/$', 'recommender.views.recommend_page'),
+    # url(r'^$', 'views.home', name='home'),
+    url(r'^$', 'recommender.views.index', name='recommender_index'),
     url(r'^fingerprint/$', 'fingerprint.views.index', name='fingerprint_index'),
     url(r'^moviedetail/$', 'moviedetail.views.index', name='moviedetail_index'),
 ]

@@ -6,34 +6,57 @@ body {
     background-color: transparent;
 }
 
-.navbar {
+.main-menu .navbar {
     padding-left: 50px;
     padding-right: 50px;
-    background-color: rgba(3,30,48,0.8);
     border: 0;
     height: 80px;
 }
 
-.nav-backhome a {
+.main-menu .nav-custom a {
     font-size: 1.2em;
     color: white !important;
-    line-height: 3px !important;
-    height: 80px;
+    line-height: 60px !important;
+    height: 60px;
+    display: table;
+    padding: 0 20px 0 0;
+}
+
+.open a{
+    background-color: #021420 !important;
+}
+
+.dropdown-menu {
+    background-color: #021420;
 }
 
 
-.navbar-right {
+.main-menu .nav-backhome a span{
+display: table-cell;
+vertical-align: middle;
+}
+
+
+.main-menu .navbar-right {
     margin: 0;
     padding: 0;
-    line-height: 80px;
+    line-height: 60px;
 }
 
-.navbar-nav {
+.main-menu .navbar-nav {
     margin: 0;
     padding: 0;
-    line-height: 80px;
+    line-height: 60px;
 }
 
-.glyphicon-arrow-left {
-    font-size: 3em;
+.main-menu .back-icon {
+    /*font-size: 3em;*/
+}
+
+.main-menu{
+    height: 60px;
+    background-color: #021420;
+    border: none;
+    padding: 0 40px;
+
 }

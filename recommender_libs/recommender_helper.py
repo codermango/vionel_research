@@ -9,6 +9,11 @@ from recommender_db import RecommenderDB
 
 class RecommenderHelper:
 
+    def __init__(self):
+        with open(os.path.split(os.path.realpath(__file__))[0] + "/feature_num.json") as feature_num_file:
+            self.feature_num_dict = json.loads(feature_num_file.readline())
+
+
     def __jsonfile_to_dict(self, json_file_path):
         json_file = open(os.path.split(os.path.realpath(__file__))[0] + json_file_path)
         result_dict = json.loads(json_file.readline())
@@ -51,8 +56,36 @@ class RecommenderHelper:
 
         return result_dict
 
+
+    def __getCosSim(self, indict1, indict2):
+        
+        indict1_keys = indict1.keys()
+        indict2_keys = indict2.keys()
+        all_keys = list(set(indict1_keys + indict2_keys))
+        indict1_keys_vector = [0] * len(all_keys)
+        indict2_keys_vector = [0] * len(all_keys)
+        
+        for index, key in enumerate(all_keys):
+            if key in indict1:
+                indict1_keys_vector[index] = indict1[key]
+            if key in indict2:
+                indict2_keys_vector[index] = indict2[key]
+
+
+        num1 = sum(map(lambda x: indict1_keys_vector[x] * indict2_keys_vector[x], range(0, len(all_keys))))
+        tmp1 = math.sqrt(sum([x ** 2 for x in indict1_keys_vector]))
+        tmp2 = math.sqrt(sum([x ** 2 for x in indict2_keys_vector]))
+        num2 = tmp1 * tmp2  # num2=sqrt(a1^2+a2^2+a3^2) * sqrt(b1^2+b2^2+b3^2)
+
+        if num2 == 0:
+            return 0
+        else:
+            return float(num1) / num2
+
+
+
     # 核心算法
-    def __calculate_cosine(self, movieid_list, featureid_list, movieid_with_featureid_dict, featureid_with_movieid_dict, featureid_with_number_dict):
+    def __calculate_cosine(self, movieid_list, featureid_list, movieid_with_featureid_dict, featureid_with_number_dict, featureid_with_number_dict_without_one):
         all_featureid_list = featureid_with_number_dict.keys()
         difference_list = list(set(featureid_list).difference(set(all_featureid_list)))
 
@@ -74,7 +107,8 @@ class RecommenderHelper:
 
         idf_dict = {}
         for i, j in featureid_with_number_dict_tmp.items():
-            idf_dict[i] = all_movie_num / len(featureid_with_movieid_dict[i])
+            # idf_dict[i] = all_movie_num / len(featureid_with_movieid_dict[i])
+            idf_dict[i] = all_movie_num / featureid_with_number_dict[i]
 
         tfidf_dict = {}
         for key in tf_dict.keys():
@@ -93,6 +127,44 @@ class RecommenderHelper:
         return cosine_score
 
 
+    def __comparison_score(self, movieid_list, movieid_with_featureid_dict, coefficient):
+        input_movie_features = []
+        for item in movieid_list:
+            try:
+                feature_list = movieid_with_featureid_dict[item]
+                input_movie_features += feature_list
+            except KeyError:
+                continue
+        input_movie_features = list(set(input_movie_features))
+
+        result_dict = {}
+        for k, v in movieid_with_featureid_dict.items():
+            intersection_num = len(list(set(v).intersection(set(input_movie_features))))
+            result_dict[k] = intersection_num * coefficient
+
+        return result_dict
+
+    def __comparison_score_keyword(self, movieid_list, movieid_with_featureid_dict, coefficient):
+        input_movie_features = []
+        for item in movieid_list:
+            try:
+                feature_list = movieid_with_featureid_dict[item]
+                input_movie_features += feature_list
+            except KeyError:
+                continue
+        input_movie_features = list(set(input_movie_features))
+
+        result_dict = {}
+        for k, v in movieid_with_featureid_dict.items():
+            intersection_num = len(list(set(v).intersection(set(input_movie_features))))
+            score = intersection_num * coefficient
+            if score > 1:
+                score = 1
+            result_dict[k] = score
+
+        return result_dict
+
+
 
     def recommend(self, movieid_list, recommended_by):
         recommenderdb = RecommenderDB()
@@ -100,34 +172,51 @@ class RecommenderHelper:
         movieid_with_featureid_dict = {}
         featureid_with_movieid_dict = {}
 
+        featureid_with_number_dict = {}
+        featureid_with_number_dict_without_one = {}
+
         movieid_with_featureid_dict = recommenderdb.get_imdbid_feature_dict(recommended_by)
 
-        if recommended_by == "actor":
-            featureid_with_movieid_dict = self.__jsonfile_to_dict("/mainactor_imdbids.json")
-        elif recommended_by == "director":
-            featureid_with_movieid_dict = self.__jsonfile_to_dict("/director_imdbids.json")
-        elif recommended_by == "genre":
-            featureid_with_movieid_dict = self.__jsonfile_to_dict("/genre_imdbids.json")
-        elif recommended_by == "keyword":
-            featureid_with_movieid_dict = self.__jsonfile_to_dict("/keyword_imdbids.json")
-        else:
-            pass
-
-        featureid_with_number_dict = self.__intersection_of_values_for_certain_keys(movieid_list, movieid_with_featureid_dict)
-
+        # print recommended_by
         result_dict = {}
-        all_featureid_list = featureid_with_number_dict.keys()
+        if recommended_by == "imdbDirectors" or recommended_by == "imdbGenres" or recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "imdbMainactors":
+            
+            featureid_with_number_dict = self.feature_num_dict[recommended_by]
+            # print featureid_with_number_dict
+            
+            # if recommended_by == "imdbDirectors":
+            #     featureid_with_movieid_dict = self.__jsonfile_to_dict("/director_imdbids.json")
+            # elif recommended_by == "imdbDirectors":
+            #     featureid_with_movieid_dict = self.__jsonfile_to_dict("/director_imdbids.json")
+            # elif recommended_by == "imdbDirectors":
+            #     featureid_with_movieid_dict = self.__jsonfile_to_dict("/director_imdbids.json")
+            # elif recommended_by == "imdbDirectors":
+            #     featureid_with_movieid_dict = self.__jsonfile_to_dict("/director_imdbids.json")
+            # elif recommended_by == "imdbDirectors":
+            #     featureid_with_movieid_dict = self.__jsonfile_to_dict("/director_imdbids.json")
 
-        for k, v in movieid_with_featureid_dict.items():
-            intersection_list = list(set(v).intersection(set(all_featureid_list)))
-            if not intersection_list:
-                result_dict[k] = 0
-                continue
+            featureid_with_number_dict_without_one = self.__intersection_of_values_for_certain_keys(movieid_list, movieid_with_featureid_dict)
 
-            cosine_score = self.__calculate_cosine(movieid_list, v, movieid_with_featureid_dict, featureid_with_movieid_dict, featureid_with_number_dict)
-            result_dict[k] = cosine_score
 
-        return result_dict
+            all_featureid_list = featureid_with_number_dict_without_one.keys()
+
+            for k, v in movieid_with_featureid_dict.items():
+
+                intersection_list = list(set(v).intersection(set(all_featureid_list)))
+                if not intersection_list:
+                    result_dict[k] = 0
+                    continue
+                
+                cosine_score = self.__calculate_cosine(movieid_list, v, movieid_with_featureid_dict, featureid_with_number_dict, featureid_with_number_dict_without_one)
+
+                result_dict[k] = cosine_score
+
+            return result_dict
+        elif recommended_by == "imdbKeywords":
+            result_dict = self.__comparison_score_keyword(movieid_list, movieid_with_featureid_dict, 0.1)
+        else:
+            result_dict = self.__comparison_score(movieid_list, movieid_with_featureid_dict, 0.1)
+            return result_dict
 
 
 

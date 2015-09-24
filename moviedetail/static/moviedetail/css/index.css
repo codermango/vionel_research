@@ -7,25 +7,33 @@ body {
 
 
 .main-box {
-    margin-top: 700px;
-    margin-bottom: 50px;
+    margin-top: 60px;
+    /*margin-bottom: 50px;*/
     min-height: 500px;
-    padding: 30px 0 0;
+    /*padding: 0 10%;*/
     background-color: transparent;
 }
 
 .feature-block {
     overflow: hidden;
-    padding: 20px 50px 50px;
-    border-bottom-style: solid;
+    padding: 40px 10%;
+/*    border-bottom-style: solid;
     border-bottom-color: rgba(255,255,255,0.2);
-    border-bottom-width: 1px;
+    border-bottom-width: 1px;*/
     background-color: rgba(3,23,35,0.95);
 }
 
+
+
+.feature-block.top{
+    position: relative;
+    background: none;
+    background-color: rgba(3,23,35,0.3);
+}
+
 .gradient {
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #011019), color-stop(1, rgba(1,16,25,0)));
-    border-bottom-color: #3D4B55;
+   /* background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #011019), color-stop(1, rgba(1,16,25,0)));
+    border-bottom-color: #3D4B55;*/
 }
 
 .poster {
@@ -33,23 +41,36 @@ body {
     background: black;
     width: 178px;
     height: 270px;
-
+    position: relative;
 }
 
 .poster img {
     width: 100%;
     height: 100%;
-    border-radius: 5px;
+    border-radius: 2px;
     box-shadow: 0 0 30px black;
 }
 
 .info-detail {
     color: white;
     float: left;
-    padding: 160px 30px 0;
+    padding: 170px 0 0 30px;
     bottom: 0;
+    position: relative;
 }
-
+.info-detail h1{
+    font-size: 40px;
+    text-shadow: 1px 1px 2px #011019;
+        font-weight: 400;
+        display: table;
+}
+.info-detail h1 span{
+    font-size: 25px;
+    opacity: .5;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 10px;
+}
 .info-detail div {
     overflow: hidden;
     padding-left: 0;
@@ -60,7 +81,7 @@ body {
 }
 
 .info-detail div span {
-    margin: 0px 5px;
+    margin: 0 5px 0 0;
     list-style: none;
 }
 
@@ -75,11 +96,11 @@ body {
 
 .genre-tag {
     background-color: #2ba8e2;
-    border: 1px solid;
-    border-color: #58bae8;
-    padding: 2px 20px 3px 20px;
-    border-radius: 10px;
+
+    padding: 3px 20px 4px 20px;
+    border-radius: 20px;
     color: #222;
+    font-weight: 600;
 }
 
 .name-tag {
@@ -165,7 +186,6 @@ body {
     margin: 0px auto;
     padding: 0px;
     /*border: 1px solid #aaaaaa;*/
-
 }
 
 #small {
@@ -173,4 +193,35 @@ body {
     height: 139px;
     background-color: black;
     border: none;
+}
+
+.background-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+.section-title{
+    color: #eee;
+    font-size: 25px;
+    margin-bottom: 25px;
+    margin-top: 0;
+}
+
+
+
+@media(max-width: 767px){
+    .feature-block {
+        padding: 40px 5px;
+    }
+}
+@media(max-width: 991px){
+    .feature-block {
+        padding: 40px 5%;
+    }
+    .info-detail {
+        padding: 0;
+    }
 }

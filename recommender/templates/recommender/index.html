@@ -44,12 +44,20 @@
                     <hr>
                     <div class="final-recommender">
                         <div class="section-title"><h2>Final Recommended Movies</h2></div>
-                        {% for img_name, score in movies_to_show.recommendmovie_score_dict %}
+                        {% for imdbid, score in movies_to_show.recommend_tuple_list %}
                         <div class="poster-box">
-                            <img src="{% static 'images/posters/' %}{{ img_name }}.jpg">
-                            <a href="http://www.imdb.com/title/{{ img_name }}" target="blank">{{ img_name }}</a>
+                            <img src="{% static 'images/posters/' %}{{ imdbid }}.jpg">
+                            <a href="http://www.imdb.com/title/{{ imdbid }}" target="blank">{{ imdbid }}</a>
                             <br>
                             <label>{{ score }}</label>
+                            <br>
+                            {% for k, v in movies_to_show.reason_tuple_list %}
+                            {% if k == imdbid %}
+                                {% for feature in v %}
+                                <label class="feature">{{ feature }}</label><br>
+                                {% endfor %}
+                            {% endif %}
+                            {% endfor %}
                         </div>
                         {% endfor %}
                     </div>

@@ -16,25 +16,26 @@
     <title>Movie recommender</title>
 {% endblock %}
 
-
+ 
 
 {% block featurepage %}
-<div class="container main-box">
+<div class=" main-box">
 
-    <div class="feature-block gradient">
+    <div class="feature-block clearfix top">
+        <!-- <div class="background-container" style="background-image: url('/static/moviedetail/images/background_poster.jpg')"></div> -->
         <div class="poster">
             <img id="moviePoster" src="{% static 'moviedetail/images/fingerprint/James Bond Casino Royale (2006).jpg' %}">
         </div>
         <div class="info-detail">
-            <h1>James Bond Casino Royale (2006)</h1>
+            <h1>James Bond Casino Royale <span>(2006)</span></h1>
             <div>
-                Released<span class="year-tag">2014</span>
-                Genres<span class="genre-tag">Genre1</span><span class="genre-tag">Genre2</span>
+                <span class="genre-tag">Action</span><span class="genre-tag">Crime</span>
             </div>
         </div>
     </div>
 
     <div class="feature-block">
+        <h1 class="section-title">Details</h1>
         <div class="item">
             <div class="item-name"><span class="name-tag">Darkness</span></div>
             <div id="activeBorder" class="active-border">
@@ -132,6 +133,7 @@
     </div>
 
     <div class="feature-block">
+        <h1 class="section-title">Environment data</h1>
         <div class="item">
             <div class="item-name"><span class="name-tag">Jungle</span></div>
             <div class="item-prec">90%</div>
@@ -158,6 +160,7 @@
     </div>
 
     <div class="feature-block">
+        <h1 class="section-title">Frame analysis</h1>
         <div class="item">
             <div id='moviefingerprint1'></div>
             <div id="preview_div">
@@ -172,12 +175,14 @@
     </div>
 
     <div class="feature-block">
+        <h1 class="section-title">Relations graph</h1>
         <div class="item">
             <div id="keyword_bubble"></div>
         </div>
     </div>
 
     <div class="feature-block">
+        <h1 class="section-title">Recommendations</h1>
         <div class="movie-box">
             <img src="{% static 'recommender/images/posters/tt0000001.jpg' %}">
             <a href="" target="blank"></a>
