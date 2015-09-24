@@ -18,7 +18,7 @@ def filter_by_rating_and_releaseyear(combined_movieid_sim_counter):
 
     for item in combined_movieid_sim_counter:
         try:
-            combined_movieid_sim_counter[item] *= movieid_imdbrating_dict[item]
+            # combined_movieid_sim_counter[item] *= movieid_imdbrating_dict[item]
             if movieid_releaseyear_dict[item] < 1990:
                 combined_movieid_sim_counter[item] *= 0.6
             elif movieid_releaseyear_dict[item] >= 1990 and movieid_releaseyear_dict[item] < 2000:
@@ -117,9 +117,18 @@ def recommend(input_movieid_list, num_of_recommended_movies):
     locationcity_movieid_sim_counter = Counter(locationcity_movieid_sim_dict)
     imdbmainactor_movieid_sim_counter = Counter(imdbmainactor_movieid_sim_dict)
 
-    locationcountry_movieid_sim_counter = multiply_coefficient(locationcountry_movieid_sim_counter, 0.2)
-    vionelscene_movieid_sim_counter = multiply_coefficient(vionelscene_movieid_sim_counter, 0.5)
-    locationcity_movieid_sim_counter = multiply_coefficient(locationcity_movieid_sim_counter, 0.4)
+    # locationcountry_movieid_sim_counter = multiply_coefficient(locationcountry_movieid_sim_counter, 0.2)
+    # vionelscene_movieid_sim_counter = multiply_coefficient(vionelscene_movieid_sim_counter, 0.5)
+    # locationcity_movieid_sim_counter = multiply_coefficient(locationcity_movieid_sim_counter, 0.4)
+    locationcountry_movieid_sim_counter = multiply_coefficient(locationcountry_movieid_sim_counter, 0.4)
+    vionelscene_movieid_sim_counter = multiply_coefficient(vionelscene_movieid_sim_counter, 0.4)
+    locationcity_movieid_sim_counter = multiply_coefficient(locationcity_movieid_sim_counter, 0.5)
+    imdbgenre_movieid_sim_counter = multiply_coefficient(imdbgenre_movieid_sim_counter, 0.4)
+    imdbdirector_movieid_sim_counter = multiply_coefficient(imdbdirector_movieid_sim_counter, 1.4)
+    imdbmainactor_movieid_sim_counter = multiply_coefficient(imdbmainactor_movieid_sim_counter, 1.4)
+    imdbkeyword_movieid_sim_counter = multiply_coefficient(imdbkeyword_movieid_sim_counter, 0.6)
+    wikikeyword_movieid_sim_counter = multiply_coefficient(wikikeyword_movieid_sim_counter, 1.2)
+    vioneltheme_movieid_sim_counter = multiply_coefficient(vioneltheme_movieid_sim_counter, 1.2)
 
     combined_movieid_sim_counter = imdbgenre_movieid_sim_counter + imdbmainactor_movieid_sim_counter + imdbdirector_movieid_sim_counter + imdbkeyword_movieid_sim_counter + wikikeyword_movieid_sim_counter + vioneltheme_movieid_sim_counter + vionelscene_movieid_sim_counter + locationcountry_movieid_sim_counter + locationcity_movieid_sim_counter 
 
