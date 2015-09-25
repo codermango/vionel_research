@@ -120,15 +120,15 @@ def recommend(input_movieid_list, num_of_recommended_movies):
     # locationcountry_movieid_sim_counter = multiply_coefficient(locationcountry_movieid_sim_counter, 0.2)
     # vionelscene_movieid_sim_counter = multiply_coefficient(vionelscene_movieid_sim_counter, 0.5)
     # locationcity_movieid_sim_counter = multiply_coefficient(locationcity_movieid_sim_counter, 0.4)
-    locationcountry_movieid_sim_counter = multiply_coefficient(locationcountry_movieid_sim_counter, 0.4)
-    vionelscene_movieid_sim_counter = multiply_coefficient(vionelscene_movieid_sim_counter, 0.4)
+    locationcountry_movieid_sim_counter = multiply_coefficient(locationcountry_movieid_sim_counter, 0.3)
+    vionelscene_movieid_sim_counter = multiply_coefficient(vionelscene_movieid_sim_counter, 0.35)
     locationcity_movieid_sim_counter = multiply_coefficient(locationcity_movieid_sim_counter, 0.5)
-    imdbgenre_movieid_sim_counter = multiply_coefficient(imdbgenre_movieid_sim_counter, 0.4)
-    imdbdirector_movieid_sim_counter = multiply_coefficient(imdbdirector_movieid_sim_counter, 1.4)
-    imdbmainactor_movieid_sim_counter = multiply_coefficient(imdbmainactor_movieid_sim_counter, 1.4)
+    imdbgenre_movieid_sim_counter = multiply_coefficient(imdbgenre_movieid_sim_counter, 0.5)
+    imdbdirector_movieid_sim_counter = multiply_coefficient(imdbdirector_movieid_sim_counter, 0.7)
+    imdbmainactor_movieid_sim_counter = multiply_coefficient(imdbmainactor_movieid_sim_counter, 0.9)
     imdbkeyword_movieid_sim_counter = multiply_coefficient(imdbkeyword_movieid_sim_counter, 0.6)
-    wikikeyword_movieid_sim_counter = multiply_coefficient(wikikeyword_movieid_sim_counter, 1.2)
-    vioneltheme_movieid_sim_counter = multiply_coefficient(vioneltheme_movieid_sim_counter, 1.2)
+    wikikeyword_movieid_sim_counter = multiply_coefficient(wikikeyword_movieid_sim_counter, 1.3)
+    vioneltheme_movieid_sim_counter = multiply_coefficient(vioneltheme_movieid_sim_counter, 1.3)
 
     combined_movieid_sim_counter = imdbgenre_movieid_sim_counter + imdbmainactor_movieid_sim_counter + imdbdirector_movieid_sim_counter + imdbkeyword_movieid_sim_counter + wikikeyword_movieid_sim_counter + vioneltheme_movieid_sim_counter + vionelscene_movieid_sim_counter + locationcountry_movieid_sim_counter + locationcity_movieid_sim_counter 
 
@@ -150,7 +150,7 @@ def recommend(input_movieid_list, num_of_recommended_movies):
 
     # filter
     # 乘上rating和releaseYear产生的系数
-    combined_movieid_sim_counter = filter_by_rating_and_releaseyear(combined_movieid_sim_counter)
+    # combined_movieid_sim_counter = filter_by_rating_and_releaseyear(combined_movieid_sim_counter)
     combined_movieid_sim_counter = filter_by_language(input_movieid_list, combined_movieid_sim_counter)
 
     final_co_recommended_movies = combined_movieid_sim_counter.most_common(num_of_recommended_movies)
