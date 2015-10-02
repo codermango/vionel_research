@@ -130,6 +130,26 @@ def generate_movie_information(infile):
             locationcountry_list = list(set(locationcountry_list))
             locationcity_list = list(set(locationcity_list))
 
+
+            rgb_list = []
+            try:
+                rgb_list.append(movie["RGB"]["R"])
+                rgb_list.append(movie["RGB"]["G"])
+                rgb_list.append(movie["RGB"]["B"])
+                rgb_list.append(movie["RGB"]["Rest"])
+                output_dict["RGB"] = rgb_list
+            except KeyError:
+                pass
+
+            try:
+                brightness_list = []
+                brightness_list.append(movie["Brightness"]["Dark"])
+                brightness_list.append(movie["Brightness"]["Bright"])
+                brightness_list.append(movie["Brightness"]["Medium"])
+                output_dict["Brightness"] = brightness_list
+            except KeyError:
+                pass
+
             print locationcountry_list
             print locationcity_list
             print vionelscene_list
@@ -141,6 +161,8 @@ def generate_movie_information(infile):
             output_dict["locationCountry"] = locationcountry_list
             output_dict["locationCity"] = locationcity_list
             output_dict["vionelScene"] = vionelscene_list
+            
+            
 
             output_json = json.dumps(output_dict)
             boxer_movies_information_file.write(output_json + "\n")

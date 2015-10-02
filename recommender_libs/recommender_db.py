@@ -15,7 +15,10 @@ class RecommenderDB:
         feature_list = []
         feature_dict_list = self.boxerMoviesCollection.find({}, {feature_name: 1, "_id": 0})
         for feature_dict in feature_dict_list:
-            feature_list += feature_dict[feature_name]
+            try:
+                feature_list += feature_dict[feature_name]
+            except KeyError:
+                continue
         feature_list = list(set(feature_list))
         # print feature_list
         return feature_list
@@ -28,8 +31,11 @@ class RecommenderDB:
         
         for movie in all_movies_feature_dict_list:
             imdbid = movie["imdbId"]
-            feature = movie[feature_name]
-            result_dict[imdbid] = feature
+            try:
+                feature = movie[feature_name]
+                result_dict[imdbid] = feature
+            except KeyError:
+                continue
         # print result_dict
         return result_dict
 
@@ -43,8 +49,11 @@ class RecommenderDB:
         all_feature_dict_list = self.boxerMoviesCollection.find({}, {feature_name: 1, "_id": 0})
         all_feature_list = []
         for movie in all_feature_dict_list:
-            feature = movie[feature_name]
-            all_feature_list += feature
+            try:
+                feature = movie[feature_name]
+                all_feature_list += feature
+            except KeyError:
+                continue
         all_feature_list = list(set(all_feature_list))
 
         count = 0
@@ -60,6 +69,9 @@ class RecommenderDB:
 
 
     def create_feature_num_collection(self):
+
+        rgb_dict = self.get_feature_featurenum_dict("RGB")
+        brightness_dict = self.get_feature_featurenum_dict("Brightness")
         genre_dict = self.get_feature_featurenum_dict("imdbGenres")
         # actor_dict = self.get_feature_featurenum_dict("imdbActors")
         director_dict = self.get_feature_featurenum_dict("imdbDirectors")
@@ -69,8 +81,8 @@ class RecommenderDB:
         vionelscene_dict = self.get_feature_featurenum_dict("vionelScene")
         locationcountry_dict = self.get_feature_featurenum_dict("locationCountry")
         locationcity_dict = self.get_feature_featurenum_dict("locationCity")
-
         mainactor_dict = self.get_feature_featurenum_dict("imdbMainactors")
+        
 
         result_dict = {}
         result_dict["imdbGenres"] = genre_dict
@@ -83,6 +95,8 @@ class RecommenderDB:
         result_dict["locationCountry"] = locationcountry_dict
         result_dict["locationCity"] = locationcity_dict
         result_dict["imdbMainactors"] = mainactor_dict
+        result_dict["RGB"] = rgb_dict
+        result_dict["Brightness"] = brightness_dict
 
 
 
@@ -101,5 +115,4 @@ class RecommenderDB:
     #         feature_num_file.write(feature_num_json)
 
 # recommenderdb = RecommenderDB()
-# # recommenderdb.change_feature_num()
 # recommenderdb.create_feature_num_collection()

@@ -18,11 +18,39 @@ def generate_all_recommendatioin():
         for movieid in all_imdbid_list:
             count += 1
             print count
-            recommended_dict_list = recommender.recommend([movieid, movieid], 20)["movie"]
-            recommended_list = []
-            for item in recommended_dict_list:
-                recommended_list.append(item[0])
-            result_dict[movieid] = recommended_list
+
+            recommended_dict_list = recommender.recommend([movieid], 20)
+            recommended_movie_dict_list = recommended_dict_list["movie"]
+            recommended_reason_dict_list = recommended_dict_list["reason"]
+            recommended_reason_dict = dict(recommended_reason_dict_list)
+
+
+            recommendation_list = []
+            for item in recommended_movie_dict_list:
+                recommended_id = item[0]
+                recommended_score = item[1]
+                
+                recommended_movie_list_item = {}
+                recommended_movie_list_item["imdbid"] = recommended_id
+                recommended_movie_list_item["score"] = recommended_score
+
+                reason_list = recommended_reason_dict[recommended_id]
+                # print reason_list
+                recommended_movie_list_item["reason"] = []
+                for reason in reason_list:
+                    if reason == "wikiKeywords":
+                        reason = "keywords2"
+                    else:
+                        reason = reason.replace("imdb", "")
+                    recommended_movie_list_item["reason"].append(reason)
+
+                # print recommended_movie_list_item["reason"]
+
+
+
+                recommendation_list.append(recommended_movie_list_item)
+            
+            result_dict[movieid] = recommendation_list
 
         result_dict_json = json.dumps(result_dict)
         recommended_results_file.write(result_dict_json)
@@ -105,7 +133,24 @@ def statics_features():
         statics_features_file.write(json.dumps(feature_allscore_dict3) + "\n")
 
 
+def add_recommendation_to_movieprofile():
+    with open("recommended_results.json") as recommended_results_file:
+        recommended_results_dict = json.loads(recommended_results_file.readline())
 
-statics_features()
+    with open("/home/mark/Projects/vionel_research_page/vionfacts/app/data/tt0443543.json") as movie_file:
+        movie_dict = json.loads(movie_file.readline())
+
+    imdbid = movie_dict["Imdbid"]
+    movie_dict["recommendation"] = recommended_results_dict[imdbid]
+    movie_json = json.dumps(movie_dict)
+
+    with open("/home/mark/Projects/vionel_research_page/vionfacts/app/data/new.json", "w") as new_file:
+        new_file.write(movie_json)
+
+
+
+# statics_features()
+generate_all_recommendatioin()
+# add_recommendation_to_movieprofile()
 
 

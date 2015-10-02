@@ -118,7 +118,7 @@ class RecommenderHelper:
 
         # print recommended_by
         result_dict = {}
-        if recommended_by == "imdbDirectors" or recommended_by == "imdbGenres" or recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "imdbMainactors":
+        if recommended_by == "imdbDirectors" or recommended_by == "imdbGenres" or recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "imdbMainactors" or recommended_by == "RGB" or recommended_by == "Brightness":
             # print movieid_list
             input_featureid_with_number_dict = self.__intersection_of_values_for_certain_keys(movieid_list, movieid_with_featureid_dict)
 

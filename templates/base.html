@@ -20,25 +20,28 @@
                     <span class="glyphicon glyphicon-chevron-left back-icon" aria-hidden="true"></span>
                     <span class="text">back to menu</span>
                 </a> -->
-                <a href="{% url 'recommender_index' %}">Recommender System</a>
+                <!-- <a href="{% url 'recommender_index' %}">Recommender System</a> -->
+                <a href="http://192.168.1.80:9000">Recommender System</a>
             </li>
-            <li class="dropdown nav-custom">
+            <!-- <li class="dropdown nav-custom">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Movie Profiler <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="{% url 'moviedetail_index' %}">Movie1</a></li>
                 </ul>
-            </li>
+            </li> -->
             <li class="nav-custom">
                 <a href="{% url 'fingerprint_index' %}">Compare</a>
             </li>
         </ul>
         <ul class="navbar-right">
             <li>
-                <a>
-                    <div id="logo">
+
+                <div id="logo">
+                    <a href="http://vionel.com" target="_blank">
                         <img src="{% static 'images/logo.png' %}">
-                    </div>
-                </a>
+                    </a>
+                </div>
+
             </li>
         </ul>
     </nav>
