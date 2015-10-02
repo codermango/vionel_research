@@ -15,17 +15,17 @@ with open("boxer_movies.json") as boxer_movies_file:
         exist_boxer_movie_list.append(boxer_movie["imdbId"])
 
 
-print len(new_movie_dict.keys())
-print len(set(new_movie_dict.keys()))
-
+needed_movie_list = []
 with open("needed_movies.json", "w") as needed_movies_file:
-    needed_movie_list = []
     for item in new_movie_dict.keys():
         if item not in exist_boxer_movie_list:
             needed_movie_list.append(item)
 
 
+all3_movie_list = []
+with open("all3_movies.dat") as all3_movies_file:
+    for all3_movies_line in all3_movies_file:
+        all3_movie = json.loads(all3_movies_line)
+        all3_movie_list.append(all3_movie["imdbId"])
 
-
-with open("all10_movies.dat") as all10_movies_file:
-    pass
+print len(set(all3_movie_list).intersection(set(needed_movie_list)))
