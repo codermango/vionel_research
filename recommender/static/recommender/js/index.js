@@ -17,14 +17,24 @@ $(function() {
     // change the font color of recommend reason
     var featureLabel = $(".feature");
     for(var i=0; i<featureLabel.length; i++) {
-        if(featureLabel[i].innerHTML == "genre") {
+        if(featureLabel[i].innerHTML == "imdbGenres") {
             featureLabel[i].style.color = "red";
-        } else if (featureLabel[i].innerHTML == "actor") {
+        } else if (featureLabel[i].innerHTML == "imdbMainactors") {
             featureLabel[i].style.color = "rebeccapurple";
-        } else if (featureLabel[i].innerHTML == "director") {
+        } else if (featureLabel[i].innerHTML == "imdbDirectors") {
             featureLabel[i].style.color = "greenyellow";
-        } else if (featureLabel[i].innerHTML == "keyword") {
+        } else if (featureLabel[i].innerHTML == "imdbKeywords") {
             featureLabel[i].style.color = "peru";
+        } else if (featureLabel[i].innerHTML == "wikiKeywords") {
+            featureLabel[i].style.color = "pink";
+        } else if (featureLabel[i].innerHTML == "vionelThemes") {
+            featureLabel[i].style.color = "yellow";
+        } else if (featureLabel[i].innerHTML == "vionelScene") {
+            featureLabel[i].style.color = "blue";
+        } else if (featureLabel[i].innerHTML == "locationCountry") {
+            featureLabel[i].style.color = "CornflowerBlue";
+        } else if (featureLabel[i].innerHTML == "locationCity") {
+            featureLabel[i].style.color = "Teal";
         }
     }
 
