@@ -110,25 +110,63 @@ def generate_movie_information(infile):
             output_dict["imdbDirectors"] = movie["imdbDirectors"]
             output_dict["imdbKeywords"] = movie["imdbKeywords"]
             output_dict["imdbRating"] = movie["imdbRating"]
-            output_dict["imdbActors"] = movie["imdbActors"]
+            try:
+                output_dict["imdbActors"] = movie["imdbActors"]
+            except KeyError:
+                pass
             output_dict["imdbId"] = movie["imdbId"]
             output_dict["releaseYear"] = movie["releaseYear"]
             output_dict["imdbMainactors"] = movie["imdbMainactors"]
 
-            wikikeyword_list = []
-            for item in movie["wikikeywords"]:
-                wikikeyword_list.append(item["keywordWikiId"])
+            try:
+                wikikeyword_list = []
+                for item in movie["wikikeywords"]:
+                    wikikeyword_list.append(item["keywordWikiId"])
+                output_dict["wikiKeywords"] = wikikeyword_list
+            except KeyError:
+                pass
 
-            vioneltheme_list = []
-            for theme in movie["vionelThemes"]:
-                vioneltheme_list.append(theme["vionelThemeID"])
+            try:
+                vioneltheme_list = []
+                for theme in movie["vionelThemes"]:
+                    vioneltheme_list.append(theme["vionelThemeID"])
+                output_dict["vionelThemes"] = vioneltheme_list
+            except KeyError:
+                pass
 
-            locationcountry_list = movie["locationCountry"].values() + movie["locationCity"].values() + movie["locationState"].values()
-            locationcity_list = movie["locationCity"].keys() + movie["locationState"].keys()
-            vionelscene_list = movie["vionScene"].keys()
+            try:
+                locationcountry_list = movie["locationCountry"].values() + movie["locationCity"].values() + movie["locationState"].values()
+                locationcity_list = movie["locationCity"].keys() + movie["locationState"].keys()
+                vionelscene_list = movie["vionScene"].keys()
 
-            locationcountry_list = list(set(locationcountry_list))
-            locationcity_list = list(set(locationcity_list))
+                locationcountry_list = list(set(locationcountry_list))
+                locationcity_list = list(set(locationcity_list))
+
+                output_dict["locationCountry"] = locationcountry_list
+                output_dict["locationCity"] = locationcity_list
+                output_dict["vionelScene"] = vionelscene_list
+            except KeyError:
+                pass
+
+
+            rgb_list = []
+            try:
+                rgb_list.append(movie["RGB"]["R"])
+                rgb_list.append(movie["RGB"]["G"])
+                rgb_list.append(movie["RGB"]["B"])
+                rgb_list.append(movie["RGB"]["Rest"])
+                output_dict["RGB"] = rgb_list
+            except KeyError:
+                pass
+
+            try:
+                brightness_list = []
+                brightness_list.append(movie["Brightness"]["Dark"])
+                brightness_list.append(movie["Brightness"]["Bright"])
+                brightness_list.append(movie["Brightness"]["Medium"])
+                output_dict["Brightness"] = brightness_list
+            except KeyError:
+                pass
 
             print locationcountry_list
             print locationcity_list
@@ -136,11 +174,13 @@ def generate_movie_information(infile):
             print
 
 
-            output_dict["wikiKeywords"] = wikikeyword_list
-            output_dict["vionelThemes"] = vioneltheme_list
-            output_dict["locationCountry"] = locationcountry_list
-            output_dict["locationCity"] = locationcity_list
-            output_dict["vionelScene"] = vionelscene_list
+            
+            
+            
+            
+            
+            
+            
 
             output_json = json.dumps(output_dict)
             boxer_movies_information_file.write(output_json + "\n")
@@ -241,6 +281,31 @@ def createweight():
 
 
 
+def add_new_features():
+    boxer_movies_path = "boxer_movies.json"
+    boxer_movies_with_scene_path = "boxer_movies_with_scene.json"
+    result_path = "result.json"
+
+    imdbid_city_dict = {}
+    with open(boxer_movies_with_scene_path) as boxer_movies_with_scene_file:
+        for line1 in boxer_movies_with_scene_file:
+            movie1 = json.loads(line1)
+            imdbid1 = movie1["imdbId"]
+            locationcity = movie1["locationCity"]
+            imdbid_city_dict[imdbid1] = locationcity
+            # print imdbid_city_dict
+
+
+    with open(boxer_movies_path) as boxer_movies_file, open(result_path, "w") as result_file:
+        for line2 in boxer_movies_file:
+            movie2 = json.loads(line2)
+            imdbid2 = movie2["imdbId"]
+            movie2["locationCity"] = imdbid_city_dict[imdbid2]
+            
+            result_json = json.dumps(movie2)
+            result_file.write(result_json + "\n")
+
+
 
 
 
@@ -249,5 +314,5 @@ def createweight():
 generate_movie_information("boxer_movies.json")
 # transform("boxer_movies_information.dat")
 
-# createweight()
+# add_new_features()
 
