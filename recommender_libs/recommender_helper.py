@@ -104,6 +104,24 @@ class RecommenderHelper:
 
         return result_dict
 
+    def __comparison_score1(self, movieid_list, movieid_with_featureid_dict, coefficient):
+        input_movie_features = []
+        for item in movieid_list:
+            try:
+                feature_list = movieid_with_featureid_dict[item]
+                input_movie_features += feature_list
+            except KeyError:
+                continue
+        input_movie_features = list(set(input_movie_features))
+
+        result_dict = {}
+        for k, v in movieid_with_featureid_dict.items():
+            intersection_num = len(list(set(v).intersection(set(input_movie_features))))
+            score = intersection_num * coefficient
+            result_dict[k] = score
+
+        return result_dict
+
 
 
     def recommend(self, movieid_list, recommended_by):
@@ -118,7 +136,7 @@ class RecommenderHelper:
 
         # print recommended_by
         result_dict = {}
-        if recommended_by == "imdbDirectors" or recommended_by == "imdbGenres" or recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "imdbMainactors" or recommended_by == "RGB" or recommended_by == "Brightness":
+        if  recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "RGB" or recommended_by == "brightness":
             # print movieid_list
             input_featureid_with_number_dict = self.__intersection_of_values_for_certain_keys(movieid_list, movieid_with_featureid_dict)
 
@@ -135,11 +153,17 @@ class RecommenderHelper:
                 cosine_score = self.__calculate_cosine(input_featureid_with_number_dict, compared_movie_feature_num_dict)
 
                 result_dict[k] = cosine_score
+        elif recommended_by == "imdbGenre":
+            result_dict = self.__comparison_score1(movieid_list, movieid_with_featureid_dict, 0.7 * 69325.4760905 / 223399.25309 / 3)
 
-            return result_dict
+        elif recommended_by == 'imdbMainactor':
+            result_dict = self.__comparison_score1(movieid_list, movieid_with_featureid_dict, 0.7 * 215719.641732/223399.25309 / 3)
+
+        elif recommended_by == 'imdbDirector':
+            result_dict = self.__comparison_score1(movieid_list, movieid_with_featureid_dict, 0.7)
         else:
             result_dict = self.__comparison_score(movieid_list, movieid_with_featureid_dict, 0.1)
-            return result_dict
+        return result_dict
 
 
 

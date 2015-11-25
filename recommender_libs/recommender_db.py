@@ -6,9 +6,9 @@ import json
 class RecommenderDB:
 
     def __init__(self):
-        client = MongoClient()
+        client = MongoClient('172.17.42.1')
         self.db = client.VionelMovies
-        self.boxerMoviesCollection = self.db.boxerMovies
+        self.boxerMoviesCollection = self.db.BoxerMovies
         
 
     def get_all_feature_list(self, feature_name):

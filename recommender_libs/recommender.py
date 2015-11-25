@@ -66,20 +66,20 @@ def reason_of_recommendation(all_feature_counter_list):
     score_dict = {}
     for key in all_feature_counter_list[0]:
         imdbid = key[0]
-        score_dict["imdbGenres"] = all_feature_counter_list[1][imdbid]
-        score_dict["imdbMainactors"] = all_feature_counter_list[2][imdbid]
-        score_dict["imdbDirectors"] = all_feature_counter_list[3][imdbid]
-        score_dict["imdbKeywords"] = all_feature_counter_list[4][imdbid]
-        score_dict["wikiKeywords"] = all_feature_counter_list[5][imdbid]
-        score_dict["vionelThemes"] = all_feature_counter_list[6][imdbid]
+        score_dict["imdbGenre"] = all_feature_counter_list[1][imdbid]
+        score_dict["imdbMainactor"] = all_feature_counter_list[2][imdbid]
+        score_dict["imdbDirector"] = all_feature_counter_list[3][imdbid]
+        score_dict["imdbKeyword"] = all_feature_counter_list[4][imdbid]
+        score_dict["wikiKeyword"] = all_feature_counter_list[5][imdbid]
+        score_dict["vionelTheme"] = all_feature_counter_list[6][imdbid]
         score_dict["vionelScene"] = all_feature_counter_list[7][imdbid]
         score_dict["locationCity"] = all_feature_counter_list[8][imdbid]
         score_dict["locationCountry"] = all_feature_counter_list[9][imdbid]
         score_dict["RGB"] = all_feature_counter_list[10][imdbid]
-        score_dict["Brightness"] = all_feature_counter_list[11][imdbid]
+        score_dict["brightness"] = all_feature_counter_list[11][imdbid]
         sorted_score_dict = sorted(score_dict.iteritems(), key=lambda d:d[1], reverse=True)
         reason_list = []
-        # print sorted_score_dict
+        print sorted_score_dict
         for item in sorted_score_dict[:4]:
             if item[1] != 0:
                 reason_list.append(item[0])
@@ -97,17 +97,17 @@ def recommend(input_movieid_list, num_of_recommended_movies):
 
     # 以下可分别得到根据genre和mawid推荐出的结果，均为（movied_id: cos_sim_value）这种的字典
     recommender_helper = RecommenderHelper()
-    imdbdirector_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbDirectors")
-    imdbgenre_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbGenres")
-    imdbkeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbKeywords")
-    wikikeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "wikiKeywords")
-    vioneltheme_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "vionelThemes")
+    imdbdirector_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbDirector")
+    imdbgenre_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbGenre")
+    imdbkeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbKeyword")
+    wikikeyword_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "wikiKeyword")
+    vioneltheme_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "vionelTheme")
     vionelscene_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "vionelScene")
     locationcountry_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "locationCountry")
     locationcity_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "locationCity")
-    imdbmainactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbMainactors")
+    imdbmainactor_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "imdbMainactor")
     rgb_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "RGB")
-    brightness_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "Brightness")
+    brightness_movieid_sim_dict = recommender_helper.recommend(input_movieid_list, "brightness")
 
     imdbgenre_movieid_sim_counter = Counter(imdbgenre_movieid_sim_dict)
     imdbdirector_movieid_sim_counter = Counter(imdbdirector_movieid_sim_dict)
@@ -122,15 +122,27 @@ def recommend(input_movieid_list, num_of_recommended_movies):
     brightness_movieid_sim_counter = Counter(brightness_movieid_sim_dict)
 
 
+    # locationcountry_movieid_sim_counter = multiply_coefficient(locationcountry_movieid_sim_counter, 0.3)
+    # vionelscene_movieid_sim_counter = multiply_coefficient(vionelscene_movieid_sim_counter, 0.35)
+    # locationcity_movieid_sim_counter = multiply_coefficient(locationcity_movieid_sim_counter, 0.5)
+    # imdbgenre_movieid_sim_counter = multiply_coefficient(imdbgenre_movieid_sim_counter, 0.5)
+    # imdbdirector_movieid_sim_counter = multiply_coefficient(imdbdirector_movieid_sim_counter, 0.7)
+    # imdbmainactor_movieid_sim_counter = multiply_coefficient(imdbmainactor_movieid_sim_counter, 0.9)
+    # imdbkeyword_movieid_sim_counter = multiply_coefficient(imdbkeyword_movieid_sim_counter, 0.6)
+    # wikikeyword_movieid_sim_counter = multiply_coefficient(wikikeyword_movieid_sim_counter, 0.5)
+    # vioneltheme_movieid_sim_counter = multiply_coefficient(vioneltheme_movieid_sim_counter, 0.5)
+    # rgb_movieid_sim_counter = multiply_coefficient(rgb_movieid_sim_counter, 0.25)
+    # brightness_movieid_sim_counter = multiply_coefficient(brightness_movieid_sim_counter, 0.25)
+
     locationcountry_movieid_sim_counter = multiply_coefficient(locationcountry_movieid_sim_counter, 0.3)
     vionelscene_movieid_sim_counter = multiply_coefficient(vionelscene_movieid_sim_counter, 0.35)
     locationcity_movieid_sim_counter = multiply_coefficient(locationcity_movieid_sim_counter, 0.5)
-    imdbgenre_movieid_sim_counter = multiply_coefficient(imdbgenre_movieid_sim_counter, 0.5)
-    imdbdirector_movieid_sim_counter = multiply_coefficient(imdbdirector_movieid_sim_counter, 0.7)
-    imdbmainactor_movieid_sim_counter = multiply_coefficient(imdbmainactor_movieid_sim_counter, 0.9)
+    # imdbgenre_movieid_sim_counter = multiply_coefficient(imdbgenre_movieid_sim_counter, 0.7 * 69325.4760905 / 223399.25309)
+    # imdbdirector_movieid_sim_counter = multiply_coefficient(imdbdirector_movieid_sim_counter, 0.7)
+    # imdbmainactor_movieid_sim_counter = multiply_coefficient(imdbmainactor_movieid_sim_counter, 0.7 * 215719.641732/223399.25309)
     imdbkeyword_movieid_sim_counter = multiply_coefficient(imdbkeyword_movieid_sim_counter, 0.6)
-    wikikeyword_movieid_sim_counter = multiply_coefficient(wikikeyword_movieid_sim_counter, 1.3)
-    vioneltheme_movieid_sim_counter = multiply_coefficient(vioneltheme_movieid_sim_counter, 1.3)
+    wikikeyword_movieid_sim_counter = multiply_coefficient(wikikeyword_movieid_sim_counter, 0.5)
+    vioneltheme_movieid_sim_counter = multiply_coefficient(vioneltheme_movieid_sim_counter, 0.5)
     rgb_movieid_sim_counter = multiply_coefficient(rgb_movieid_sim_counter, 0.25)
     brightness_movieid_sim_counter = multiply_coefficient(brightness_movieid_sim_counter, 0.25)
 
@@ -171,7 +183,7 @@ def recommend(input_movieid_list, num_of_recommended_movies):
     result_dict = dict()
     result_dict["movie"] = final_co_recommended_movies
     result_dict["reason"] = reason_tuple_list
-
+    print result_dict
     return result_dict
 
 
