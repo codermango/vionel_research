@@ -33,6 +33,7 @@ def recommend_page(request):
     input_movies = request.GET.get('inputMovies').strip()
     recommend_num = int(request.GET.get('recommendNum'))
 
+    # sr = SimilarityRecommender('tv', 'VionelMovies', 'AllSeries')
     sr = SimilarityRecommender('movie', 'VionelMovies')
     result_dict = sr.recommend([input_movies], 10)
 

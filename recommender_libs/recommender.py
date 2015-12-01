@@ -31,7 +31,7 @@ class SimilarityRecommender(object):
                 'imdbCreator': 1,
                 'imdbGenre': 1,
                 'imdbMainactor': 1,
-
+                'imdbKeyword': 1
             }
         self.mongo_manager = MongoManager(db_name, collection_name, hostname, port)
         self.media_type = media_type
@@ -61,7 +61,7 @@ class SimilarityRecommender(object):
         movieid_with_featureid_dict = self.__get_imdbid_feature_dict(recommended_by)
 
         result_dict = {}
-        if recommended_by == "imdbDirector" or recommended_by == "imdbGenre" or recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "imdbMainactor" or recommended_by == "RGB" or recommended_by == "brightness" or recommended_by == 'imdbCreator':
+        if recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "RGB" or recommended_by == "brightness" or recommended_by == 'imdbCreator':
 
             input_featureid_with_number_dict = intersection_of_values_for_certain_keys(movieid_list, movieid_with_featureid_dict)
             all_featureid_list = input_featureid_with_number_dict.keys()
@@ -81,7 +81,14 @@ class SimilarityRecommender(object):
             input_movie_features = []
             input_movie_features = union_of_values_for_spec_keys(movieid_list, movieid_with_featureid_dict)
 
-            coefficient = 0.1
+            coefficient = 0
+            if recommended_by == "imdbGenre":
+                coefficient = 0.7 * 69325.4760905 / 223399.25309 / 3
+            elif recommended_by == "imdbMainactor":
+                coefficient = 0.7 * 215719.641732/223399.25309 / 3
+            elif recommended_by == "imdbDirector":
+                coefficient = 0.7
+
             for k, v in movieid_with_featureid_dict.items():
                 intersection_num = len(list(set(v).intersection(set(input_movie_features))))
                 score = intersection_num * coefficient
