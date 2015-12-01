@@ -2,8 +2,7 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from recommender_libs.recommender import SimilarityRecommender
-
+from cb_recommender.recommender import SimilarityRecommender
 
 # Create your views here.
 
