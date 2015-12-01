@@ -2,6 +2,7 @@
 import json
 import sys
 from collections import Counter
+from collections import OrderedDict
 
 from _vionel_helper import *
 from _db_helper import MongoManager
@@ -9,22 +10,31 @@ from _db_helper import MongoManager
 
 class SimilarityRecommender(object):
 
-    def __init__(self, db_name='VionelMovies', collection_name='BoxerMovies', hostname='172.17.42.1', port=27017):
+    def __init__(self, media_type='movie', db_name='VionelMovies', collection_name='BoxerMovies', hostname='172.17.42.1', port=27017):
 
-        self.feature_weight_dict = {
-            'imdbDirector': 0.7,
-            'imdbGenre': 0.5,
-            'imdbKeyword': 0.6,
-            'wikiKeyword': 1.3,
-            'vionelTheme': 1.3,
-            'vionelScene': 0.35,
-            'locationCountry': 0.3,
-            'locationCity': 0.5,
-            'imdbMainactor': 0.9,
-            'RGB': 0.25,
-            'brightness': 0.25
-        }
+        if media_type == 'movie':
+            self.feature_weight_dict = {
+                'imdbDirector': 0.7,
+                'imdbGenre': 0.5,
+                'imdbKeyword': 0.6,
+                'wikiKeyword': 1.3,
+                'vionelTheme': 1.3,
+                'vionelScene': 0.35,
+                'locationCountry': 0.3,
+                'locationCity': 0.5,
+                'imdbMainactor': 0.9,
+                'RGB': 0.25,
+                'brightness': 0.25
+            }
+        elif media_type == 'tv':
+            self.feature_weight_dict = {
+                'imdbCreator': 1,
+                'imdbGenre': 1,
+                'imdbMainactor': 1,
+
+            }
         self.mongo_manager = MongoManager(db_name, collection_name, hostname, port)
+        self.media_type = media_type
 
 
     def __get_imdbid_feature_dict(self, feature_name):
@@ -51,7 +61,7 @@ class SimilarityRecommender(object):
         movieid_with_featureid_dict = self.__get_imdbid_feature_dict(recommended_by)
 
         result_dict = {}
-        if recommended_by == "imdbDirector" or recommended_by == "imdbGenre" or recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "imdbMainactor" or recommended_by == "RGB" or recommended_by == "brightness":
+        if recommended_by == "imdbDirector" or recommended_by == "imdbGenre" or recommended_by == "locationCountry" or recommended_by == "locationCity" or recommended_by == "vionelScene" or recommended_by == "imdbMainactor" or recommended_by == "RGB" or recommended_by == "brightness" or recommended_by == 'imdbCreator':
 
             input_featureid_with_number_dict = intersection_of_values_for_certain_keys(movieid_list, movieid_with_featureid_dict)
             all_featureid_list = input_featureid_with_number_dict.keys()
@@ -126,7 +136,7 @@ class SimilarityRecommender(object):
             for feature in self.feature_weight_dict:
                 variable_name = feature.lower()
                 exec "feature_score_dict['%s'] = self.%s_movieid_sim_counter['%s']" % (feature, variable_name, movieid)
-            movieid_featurescore_dict[movieid] = feature_score_dict
+            movieid_featurescore_dict[movieid] = OrderedDict(sorted(feature_score_dict.items(), key=lambda t: t[1], reverse=True))
         return movieid_featurescore_dict
 
 
@@ -197,17 +207,19 @@ class SimilarityRecommender(object):
         for feature in self.feature_weight_dict:
             exec "combined_movieid_sim_counter += self.%s_movieid_sim_counter" % feature.lower()
 
-        # filter
-        combined_movieid_sim_counter = self.__language_filter(input_movieid_list, combined_movieid_sim_counter)
+        if self.media_type == 'movie':
+            # filter
+            combined_movieid_sim_counter = self.__language_filter(input_movieid_list, combined_movieid_sim_counter)
         final_recommended_movies_dict = dict(combined_movieid_sim_counter.most_common(num_of_recommended_movies))
+        final_ordered_recommended_movies_dict = OrderedDict(sorted(final_recommended_movies_dict.items(), key=lambda t: t[1], reverse=True))
 
         movieid_featurewithscore_dict = self.features_contribute_most(final_recommended_movies_dict)
 
         # print reason_tuple_list
         result_dict = dict()
-        result_dict["movie"] = final_recommended_movies_dict
+        result_dict["movie"] = final_ordered_recommended_movies_dict
         result_dict["reason"] = movieid_featurewithscore_dict
-
+        # print result_dict
         return result_dict
 
 
